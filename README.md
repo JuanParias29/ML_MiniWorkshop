@@ -30,7 +30,7 @@ El taller se organiza en tres rutas de aprendizaje progresivas que abordan el pr
 | -------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | [`01_pronostico_demanda.ipynb`](./notebooks/01_pronostico_demanda.ipynb)       | ¿Cuántas líneas de artículos compradas podrían observarse en próximos periodos? | Ruta principal presencial (\~1 hora). Permite seleccionar una categoría, una agregación temporal y un horizonte de pronóstico. |
 | [`02_prediccion_recompra.ipynb`](./notebooks/02_prediccion_recompra.ipynb)     | ¿Volverá a comprar un cliente durante una ventana futura de 90 días?            | Continuación: clasificación binaria con separación temporal para definir la variable objetivo.                                 |
-| [`03_segmentacion_clientes.ipynb`](./notebooks/03_segmentacion_clientes.ipynb) | ¿Qué patrones de compra similares aparecen entre clientes?                      | Continuación: análisis RFM, escalado de variables, K-Means e interpretación exploratoria de segmentos.                         |
+| [`03_segmentacion_clientes.ipynb`](./notebooks/03_segmentacion_clientes.ipynb) | ¿Qué patrones de compra similares aparecen entre clientes?                      | Continuación: análisis RFM, escalado y comparación de K-Means, GMM y Birch; grupos exploratorios, no categorías verdaderas.    |
 
 Cada notebook desarrolla un problema específico y concluye con una interfaz pequeña de Gradio para experimentar con el modelo.
 
