@@ -28,9 +28,9 @@ El taller se organiza en tres rutas de aprendizaje progresivas que abordan el pr
 
 | Notebook                                                             | Pregunta orientadora                                                            | Alcance                                                                                                                        |
 | -------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| [`01_pronostico_demanda.ipynb`](./notebooks/01_pronostico_demanda.ipynb)       | ¿Cuántas líneas de artículos compradas podrían observarse en próximos periodos? | Ruta principal presencial (\~1 hora). Permite seleccionar una categoría, una agregación temporal y un horizonte de pronóstico. |
+| [`01_pronostico_demanda.ipynb`](./notebooks/01_pronostico_demanda.ipynb)       | ¿Cuántos pedidos entregados incluirán artículos de una categoría en próximos periodos? | Ruta principal presencial (\~1 hora). Permite elegir categoría, agregación temporal y horizonte; pronostica pedidos, no unidades físicas. |
 | [`02_prediccion_recompra.ipynb`](./notebooks/02_prediccion_recompra.ipynb)     | ¿Volverá a comprar un cliente durante una ventana futura de 90 días?            | Continuación: clasificación binaria con separación temporal para definir la variable objetivo.                                 |
-| [`03_segmentacion_clientes.ipynb`](./notebooks/03_segmentacion_clientes.ipynb) | ¿Qué patrones de compra similares aparecen entre clientes?                      | Continuación: análisis RFM, escalado y comparación de K-Means, GMM y Birch; grupos exploratorios, no categorías verdaderas.    |
+| [`03_segmentacion_clientes.ipynb`](./notebooks/03_segmentacion_clientes.ipynb) | ¿Qué patrones de compra similares aparecen entre clientes?                      | Continuación: comparación de K-Means, GMM y Birch; nombra perfiles con diferencias medidas en recencia, frecuencia, gasto y variedad. |
 
 Cada notebook desarrolla un problema específico y concluye con una interfaz pequeña de Gradio para experimentar con el modelo.
 
@@ -117,7 +117,7 @@ descargas de datos ni configuraciones adicionales.
 
 Es importante distinguir entre las compras observadas y la demanda real del mercado.
 
-El conjunto de datos registra pedidos y artículos comprados, pero no contiene información sobre inventario, disponibilidad, quiebres de stock ni demanda no satisfecha. Por tanto, los notebooks no permiten medir directamente ventas perdidas ni reconstruir la demanda que no llegó a convertirse en una compra.
+El CSV de artículos contiene `order_id`, `product_id` y `price`, pero no una columna `quantity`. Cada fila enlaza un producto con un pedido; el número de filas no basta para confirmar las unidades físicas vendidas. Por eso el notebook 01 pronostica pedidos distintos que contienen una categoría, no unidades a vender. El dataset tampoco registra inventario, quiebres de stock ni demanda no satisfecha, por lo que no permite reconstruir compras que no ocurrieron.
 
 Los modelos y las métricas obtenidos deben interpretarse dentro de estas limitaciones. Este material no constituye una herramienta validada para decisiones comerciales reales.
 
@@ -125,19 +125,26 @@ Los modelos y las métricas obtenidos deben interpretarse dentro de estas limita
 
 ```text
 .
+├── data/
+│   ├── README.md
+│   ├── olist_customers_dataset.csv
+│   ├── olist_order_items_dataset.csv
+│   ├── olist_orders_dataset.csv
+│   ├── olist_products_dataset.csv
+│   └── product_category_name_translation.csv
+├── docs/
+│   ├── banner_taller_ml.png
+│   └── diccionario_datos.md
 ├── notebooks/
 │   ├── 01_pronostico_demanda.ipynb
 │   ├── 02_prediccion_recompra.ipynb
 │   └── 03_segmentacion_clientes.ipynb
-├── docs/
-│   ├── diccionario_datos.md
-│   └── banner_taller_ml.png
-├── data/
-│   ├── README.md
-│   └── *.csv         # Tablas seleccionadas de Olist
-├── requirements.txt
+├── .vscode/
+│   └── settings.json
+├── .gitignore
 ├── LICENSE
-└── README.md
+├── README.md
+└── requirements.txt
 ```
 
 ## Tecnologías utilizadas

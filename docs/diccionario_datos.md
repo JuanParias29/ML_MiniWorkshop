@@ -19,7 +19,7 @@ indicadas derivan del esquema y se usan para enlazar las tablas.
 | --- | --- | --- | --- |
 | `olist_orders_dataset.csv` | `order_id` (texto), `customer_id` (texto), `order_status` (texto), `order_purchase_timestamp` (fecha/hora ISO como texto) | `order_id` identifica pedido; `customer_id` referencia `customers.customer_id`. | Las tres rutas; fecha de compra y estado. |
 | `olist_customers_dataset.csv` | `customer_id`, `customer_unique_id` (texto seudónimo) | `customer_id` se enlaza con pedidos; `customer_unique_id` agrupa pedidos asociados al mismo cliente seudónimo. | Recompra y segmentación para agrupar. |
-| `olist_order_items_dataset.csv` | `order_id`, `product_id` (texto), `price` (numérico) | `order_id` enlaza pedidos y `product_id` productos; el original permite varias líneas por pedido. | Pronóstico, recompra y segmentación. |
+| `olist_order_items_dataset.csv` | `order_id`, `product_id` (texto), `price` (numérico) | `order_id` enlaza pedidos y `product_id` productos; puede haber varias filas de artículos en un pedido. | Valor de compra y variedad en recompra/segmentación; enlace para clasificar pedidos por categoría en el pronóstico. |
 | `olist_products_dataset.csv` | `product_id`, `product_category_name` (texto; puede faltar categoría) | `product_id` enlaza líneas de pedido. | Categoría para las tres rutas. |
 | `product_category_name_translation.csv` | `product_category_name`, `product_category_name_english` (texto) | `product_category_name` enlaza el nombre de categoría del producto. | Traducción usada como etiqueta legible. |
 | `olist_order_payments_dataset.csv` | No incluido | Tabla original no copiada al repositorio. | No se requiere. |
@@ -45,8 +45,12 @@ etiqueta como `sin_categoria`.
 
 - No hay columnas publicadas de inventario, disponibilidad, quiebre de stock,
   unidades pedidas no satisfechas ni intención de compra.
-- No aparece una columna explícita `quantity`. El número de filas de
-  `order_items` mide líneas de artículos observadas, no necesariamente unidades.
+- No aparece una columna explícita `quantity`. Cada fila de `order_items`
+  enlaza un producto con un pedido, pero el archivo seleccionado no permite
+  contar las unidades físicas. El pronóstico cuenta `order_id` distintos que
+  contienen una categoría en cada periodo; un pedido con varias filas de esa
+  categoría cuenta una vez. Este resultado no equivale a unidades vendidas ni
+  a unidades que habría que vender.
 - `customer_unique_id` es un identificador seudónimo y se usa solo para
   agrupar. No se muestra en tablas, gráficos o interfaz; no se usan nombres,
   ubicaciones ni coordenadas.
