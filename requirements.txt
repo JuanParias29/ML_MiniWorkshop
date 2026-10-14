@@ -1,0 +1,6 @@
+pandas==2.2.3
+pyarrow==19.0.1
+scikit-learn==1.6.1
+matplotlib==3.10.1
+gradio==5.23.1
+jupyterlab==4.3.5

@@ -1,0 +1,13 @@
+# Local datasets and derived tables
+data/raw/
+data/processed/
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# Kaggle credentials and local secrets
+kaggle.json
+.env
