@@ -28,9 +28,9 @@ El taller se organiza en tres rutas de aprendizaje progresivas que abordan el pr
 
 | Notebook                                                             | Pregunta orientadora                                                            | Alcance                                                                                                                        |
 | -------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| [`01_pronostico_demanda.ipynb`](./01_pronostico_demanda.ipynb)       | ¿Cuántas líneas de artículos compradas podrían observarse en próximos periodos? | Ruta principal presencial (\~1 hora). Permite seleccionar una categoría, una agregación temporal y un horizonte de pronóstico. |
-| [`02_prediccion_recompra.ipynb`](./02_prediccion_recompra.ipynb)     | ¿Volverá a comprar un cliente durante una ventana futura de 90 días?            | Continuación: clasificación binaria con separación temporal para definir la variable objetivo.                                 |
-| [`03_segmentacion_clientes.ipynb`](./03_segmentacion_clientes.ipynb) | ¿Qué patrones de compra similares aparecen entre clientes?                      | Continuación: análisis RFM, escalado de variables, K-Means e interpretación exploratoria de segmentos.                         |
+| [`01_pronostico_demanda.ipynb`](./notebooks/01_pronostico_demanda.ipynb)       | ¿Cuántas líneas de artículos compradas podrían observarse en próximos periodos? | Ruta principal presencial (\~1 hora). Permite seleccionar una categoría, una agregación temporal y un horizonte de pronóstico. |
+| [`02_prediccion_recompra.ipynb`](./notebooks/02_prediccion_recompra.ipynb)     | ¿Volverá a comprar un cliente durante una ventana futura de 90 días?            | Continuación: clasificación binaria con separación temporal para definir la variable objetivo.                                 |
+| [`03_segmentacion_clientes.ipynb`](./notebooks/03_segmentacion_clientes.ipynb) | ¿Qué patrones de compra similares aparecen entre clientes?                      | Continuación: análisis RFM, escalado de variables, K-Means e interpretación exploratoria de segmentos.                         |
 
 Cada notebook desarrolla un problema específico y concluye con una interfaz pequeña de Gradio para experimentar con el modelo.
 
@@ -61,84 +61,57 @@ Antes de redistribuir los datos o utilizar derivados, se debe verificar la ficha
 
 **La licencia del código no modifica la licencia de los datos.** El código educativo de este repositorio se distribuye bajo MIT, mientras que el conjunto de datos conserva las condiciones establecidas por sus titulares.
 
-## Instalación y preparación de los datos
+## Datos en el repositorio
 
-### 1. Descargar el conjunto de datos
+La carpeta [`data/`](./data/) contiene cinco CSV públicos derivados del dataset
+de Olist, con únicamente las columnas necesarias para los notebooks. Se
+conservaron las filas y se omitieron códigos postales, ciudades, estados,
+reseñas, pagos, datos de vendedores y geolocalización. Los identificadores de
+cliente seudónimos se mantienen para enlazar pedidos y agrupar transacciones;
+no se muestran en los gráficos ni en las interfaces.
 
-Descargue el dataset desde la [página oficial de Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce). Inicie sesión y acepte las condiciones que solicite la plataforma. También puede utilizar la CLI oficial de Kaggle.
+La ficha oficial declara licencia CC BY-NC-SA 4.0. La selección de columnas es
+una adaptación: se redistribuye con atribución a Olist, únicamente para usos no
+comerciales y bajo la misma licencia. Consulte [`data/README.md`](./data/README.md)
+y el [diccionario de datos](./docs/diccionario_datos.md). No se incluyen
+credenciales ni archivos de Kaggle.
 
-No incluya `kaggle.json`, tokens ni credenciales dentro del repositorio. En local, utilice la ubicación segura documentada por Kaggle; en Google Colab, utilice Secrets o cargue manualmente el archivo ZIP desde su equipo.
+Los notebooks leen directamente los CSV desde las URL públicas de GitHub en
+`main/data/`. No requieren descargar datos desde Kaggle, subir archivos a
+Colab ni ejecutar scripts de preparación. Si la rama o ubicación del
+repositorio cambia, actualice `DATA_BASE_URL` en el notebook.
 
-### 2. Organizar los archivos
+## Instalación y ejecución
 
-Descomprima los CSV originales, sin modificarlos, dentro de `data/raw/`.
+**Requisitos:** Python 3.10–3.13. Las versiones principales están fijadas en
+[`requirements.txt`](./requirements.txt).
 
-Las tablas requeridas incluyen:
+### Google Colab
 
-- `olist_orders_dataset.csv`
-- `olist_customers_dataset.csv`
-- `olist_order_items_dataset.csv`
-- `olist_products_dataset.csv`
-- `product_category_name_translation.csv`
+Abra el notebook elegido desde GitHub con **Open in Colab**. Instale los
+requisitos una vez en la sesión:
 
-El conjunto original contiene otras tablas que no son necesarias para estos ejercicios.
-
-La carpeta `data/raw/` está excluida de Git.
-
-### 3. Instalar dependencias y preparar las tablas
-
-Desde la raíz del repositorio, ejecute:
-
-```bash
-python -m pip install -r requirements.txt
-python scripts/prepare_data.py
+```python
+%pip install -q -r https://raw.githubusercontent.com/JuanParias29/ML_MiniWorkshop/main/requirements.txt
 ```
 
-El script valida los encabezados, conserva los CSV originales y genera los archivos Parquet requeridos en `data/processed/`, carpeta también excluida de Git.
+Después ejecute las celdas en orden. El notebook carga los CSV desde este
+repositorio, sin pasos de descarga ni configuración de Kaggle. La sesión y la
+interfaz Gradio son temporales; guarde por separado cualquier resultado que
+desee conservar.
 
-Solo se convierten las tablas necesarias para los ejercicios: pedidos, clientes, líneas de pedido, productos y traducción de categorías.
+### Ejecución local
 
-### 4. Ejecutar los notebooks
-
-Abra los notebooks desde la raíz del repositorio y ejecute sus celdas en orden.
-
-Si falta algún archivo Parquet requerido, el notebook se detendrá y mostrará instrucciones para preparar los datos. No se generan resultados ficticios para sustituir los resultados del conjunto de datos.
-
-## Ejecución en Google Colab
-
-Puede abrir cada notebook desde GitHub y seleccionar **Open in Colab**, o clonar el repositorio directamente en una sesión de Colab.
-
-Pasos generales:
-
-1. Abra el repositorio en Google Colab.
-2. Instale las dependencias de `requirements.txt`.
-3. Descargue y descomprima los datos en `data/raw/`.
-4. Ejecute `scripts/prepare_data.py`.
-5. Ejecute las celdas del notebook seleccionado en orden.
-
-La sesión de Colab y las interfaces de Gradio desaparecen al cerrar o reiniciar el entorno. Si desea conservar los resultados, guarde los archivos necesarios por separado.
-
-## Ejecución local
-
-**Requisitos:** Python 3.10–3.13 y JupyterLab o Jupyter Notebook.
-
-Cree un entorno virtual, instale las dependencias, prepare los datos y abra Jupyter desde la raíz del repositorio.
+Clone el repositorio, instale los requisitos y abra Jupyter:
 
 ```bash
-python -m venv .venv
-
-# Windows PowerShell
-.venv\Scripts\Activate.ps1
-
-# macOS/Linux
-source .venv/bin/activate
-
 python -m pip install -r requirements.txt
-python scripts/prepare_data.py
 jupyter lab
 ```
 
-Las visualizaciones y las interfaces de Gradio requieren un navegador.
+Abra un notebook dentro de `notebooks/` y ejecute las celdas en orden. Hace
+falta conexión a internet para leer los CSV públicos de GitHub; no se requieren
+descargas de datos ni configuraciones adicionales.
 
 ## Alcance y limitaciones
 
@@ -160,8 +133,8 @@ Los modelos y las métricas obtenidos deben interpretarse dentro de estas limita
 │   ├── diccionario_datos.md
 │   └── banner_taller_ml.png
 ├── data/
-│   ├── raw/          # Datos originales
-│   └── processed/    # Datos procesados
+│   ├── README.md
+│   └── *.csv         # Tablas seleccionadas de Olist
 ├── requirements.txt
 ├── LICENSE
 └── README.md
@@ -171,7 +144,7 @@ Los modelos y las métricas obtenidos deben interpretarse dentro de estas limita
 
 - **Python:** procesamiento de datos y desarrollo de modelos.
 - **Pandas:** manipulación y transformación de tablas.
-- **Parquet:** almacenamiento de datos procesados.
+- **CSV:** tablas de datos publicadas junto al repositorio.
 - **Jupyter:** desarrollo y ejecución interactiva.
 - **Scikit-learn:** herramientas de Machine Learning.
 - **Gradio:** construcción de interfaces demostrativas.
